@@ -238,7 +238,7 @@ class _MainScreenState extends State<MainScreen> {
                 color: Color.fromRGBO(70, 212, 153, 1),
               ),
               title: const Text(
-                "Doctor's Profile",
+                "My Profile",
                 style: TextStyle(fontSize: 18),
               ),
             )

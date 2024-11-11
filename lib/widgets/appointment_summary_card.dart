@@ -225,8 +225,7 @@ class _AppointmentSummaryCardState extends State<AppointmentSummaryCard> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                SizedBox(
-                                  // width: MediaQuery.of(context).size.width * 0.40,
+                                Expanded(
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
                                       elevation: 0,
@@ -254,8 +253,7 @@ class _AppointmentSummaryCardState extends State<AppointmentSummaryCard> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(
-                                  // width: MediaQuery.of(context).size.width * 0.40,
+                                Expanded(
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
                                       shape: RoundedRectangleBorder(
@@ -272,8 +270,8 @@ class _AppointmentSummaryCardState extends State<AppointmentSummaryCard> {
                                     child: const Padding(
                                       padding: EdgeInsets.only(
                                         top: 13.0,
-                                        left: 15,
-                                        right: 15,
+                                        left: 7,
+                                        right: 7,
                                         bottom: 13,
                                       ),
                                       child: Text(
@@ -284,8 +282,7 @@ class _AppointmentSummaryCardState extends State<AppointmentSummaryCard> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(
-                                  // width: MediaQuery.of(context).size.width * 0.40,
+                                Expanded(
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
                                       shape: RoundedRectangleBorder(
