@@ -47,7 +47,7 @@ class _AppointmentSummaryCardState extends State<AppointmentSummaryCard> {
                           "Patient Name : ${widget.documentSnapshot["customerName"]}",
                           style: const TextStyle(
                             fontWeight: FontWeight.w500,
-                            fontSize: 20,
+                            fontSize: 15,
                           ),
                         ),
                         const SizedBox(

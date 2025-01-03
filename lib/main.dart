@@ -2,8 +2,7 @@ import 'package:doctor_dashboard_app/services/log_in.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'blocs/auth_bloc.dart';
+import 'auth/firebase_authentication.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +22,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Provider(
-      create: (context) => AuthBloc(),
+      create: (context) => FirebaseAuthentication(),
       child: const MaterialApp(
         home: LogIn(),
         debugShowCheckedModeBanner: false,

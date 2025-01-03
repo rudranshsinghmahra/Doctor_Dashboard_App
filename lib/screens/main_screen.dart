@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doctor_dashboard_app/auth/firebase_authentication.dart';
 import 'package:doctor_dashboard_app/provider.dart';
 import 'package:doctor_dashboard_app/services/firebase_services.dart';
 import 'package:doctor_dashboard_app/widgets/appointment_summary_card.dart';
@@ -8,7 +9,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../blocs/auth_bloc.dart';
 import 'doctor_profile_screen.dart';
 import 'login_screen.dart';
 
@@ -70,7 +70,7 @@ class _MainScreenState extends State<MainScreen> {
         isLoading = false;
       });
     });
-    var authBloc = Provider.of<AuthBloc>(context, listen: false);
+    var authBloc = Provider.of<FirebaseAuthentication>(context, listen: false);
 
     loginStateSubscription = authBloc.currentUser.listen((fbUser) {
       if (fbUser == null) {
