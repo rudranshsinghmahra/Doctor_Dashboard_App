@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_dashboard_app/auth/firebase_authentication.dart';
@@ -9,11 +10,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 import 'doctor_profile_screen.dart';
 import 'login_screen.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
+  const MainScreen({super.key});
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -40,14 +42,19 @@ class _MainScreenState extends State<MainScreen> {
   String doctorProfilePic = "";
   DocumentSnapshot? dSnapshot;
   bool isLoading = true;
+  bool isDataAvailable = false;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final firebaseAuthentication = FirebaseAuthentication();
 
   toggleDrawer() async {
-    if (_scaffoldKey.currentState!.isDrawerOpen) {
-      _scaffoldKey.currentState!.openEndDrawer();
-    } else {
-      _scaffoldKey.currentState!.openDrawer();
+    final scaffoldState = _scaffoldKey.currentState;
+    if (scaffoldState != null) {
+      if (scaffoldState.isDrawerOpen) {
+        scaffoldState.openEndDrawer();
+      } else {
+        scaffoldState.openDrawer();
+      }
     }
   }
 
@@ -55,21 +62,38 @@ class _MainScreenState extends State<MainScreen> {
     CollectionReference doctorData =
         FirebaseFirestore.instance.collection('doctors');
     DocumentSnapshot documentSnapshot = await doctorData.doc(user?.uid).get();
-    setState(() {
-      doctorName = documentSnapshot['doctor_name'];
-      doctorSpecialization = documentSnapshot['doctor_specialization'];
-      doctorProfilePic = documentSnapshot['doctor_profile_picture'];
-      dSnapshot = documentSnapshot;
-    });
+    if (!documentSnapshot.exists) {
+      if (mounted) {
+        setState(() {
+          isDataAvailable = false;
+          doctorName = "Kindly register yourself ";
+          doctorSpecialization = "";
+          doctorProfilePic = "assets/images/blank_profile.png";
+        });
+      }
+    } else {
+      if (mounted) {
+        setState(() {
+          isDataAvailable = true;
+          doctorName = documentSnapshot['doctor_name'];
+          doctorSpecialization = documentSnapshot['doctor_specialization'];
+          doctorProfilePic = documentSnapshot['doctor_profile_picture'];
+          dSnapshot = documentSnapshot;
+        });
+      }
+    }
   }
 
   @override
   void initState() {
+    super.initState();
+
     Future.delayed(const Duration(seconds: 1), () {
       setState(() {
         isLoading = false;
       });
     });
+
     var authBloc = Provider.of<FirebaseAuthentication>(context, listen: false);
 
     loginStateSubscription = authBloc.currentUser.listen((fbUser) {
@@ -82,9 +106,8 @@ class _MainScreenState extends State<MainScreen> {
         );
       }
     });
+
     fetchDoctorData();
-    toggleDrawer();
-    super.initState();
   }
 
   @override
@@ -107,14 +130,9 @@ class _MainScreenState extends State<MainScreen> {
           ChipsChoice<int>.single(
             value: tag,
             onChanged: (val) {
-              if (val == 0) {
-                setState(() {
-                  orderProvider.status == null;
-                });
-              }
               setState(() {
                 tag = val;
-                orderProvider.status = options[val];
+                orderProvider.status = val == 0 ? null : options[val];
               });
             },
             choiceItems: C2Choice.listFrom<int, String>(
@@ -122,7 +140,7 @@ class _MainScreenState extends State<MainScreen> {
               value: (i, v) => i,
               label: (i, v) => v,
             ),
-            choiceStyle: const C2ChipStyle(backgroundColor: Colors.green)
+            choiceStyle: const C2ChipStyle(backgroundColor: Colors.green),
           ),
           StreamBuilder<QuerySnapshot>(
             stream: service.appointments
@@ -135,29 +153,25 @@ class _MainScreenState extends State<MainScreen> {
               if (snapshot.hasError) {
                 return const Text('Something Went Wrong');
               }
-              if (snapshot.data?.size == 0) {
-                //TODO: No Appointments screen
-                return Expanded(
-                  child: SizedBox(
-                    child: Center(
-                      child: Text(
-                        tag > 0
-                            ? "No ${options[tag]} Appointments"
-                            : "No Appointments Currently",
-                        style: const TextStyle(fontSize: 18),
-                        textAlign: TextAlign.center,
-                      ),
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Expanded(
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: Color.fromRGBO(80, 212, 153, 1),
                     ),
                   ),
                 );
               }
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Expanded(
-                  child: SizedBox(
-                    child: Center(
-                        child: CircularProgressIndicator(
-                      color: Color.fromRGBO(80, 212, 153, 1),
-                    )),
+              if (snapshot.data?.size == 0) {
+                return Expanded(
+                  child: Center(
+                    child: Text(
+                      tag > 0
+                          ? "No ${options[tag]} Appointments"
+                          : "No Appointments Currently",
+                      style: const TextStyle(fontSize: 18),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 );
               }
@@ -166,8 +180,6 @@ class _MainScreenState extends State<MainScreen> {
                 child: ListView(
                   children:
                       snapshot.data!.docs.map((DocumentSnapshot document) {
-                    Map<String, dynamic> data =
-                        document.data()! as Map<String, dynamic>;
                     return AppointmentSummaryCard(documentSnapshot: document);
                   }).toList(),
                 ),
@@ -185,9 +197,7 @@ class _MainScreenState extends State<MainScreen> {
                     color: const Color.fromRGBO(80, 212, 153, 1),
                     height: 198,
                     child: const Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                      ),
+                      child: CircularProgressIndicator(color: Colors.white),
                     ),
                   )
                 : UserAccountsDrawerHeader(
@@ -198,8 +208,10 @@ class _MainScreenState extends State<MainScreen> {
                       doctorName,
                       style: const TextStyle(fontSize: 20),
                     ),
-                    accountEmail: Text(doctorSpecialization,
-                        style: const TextStyle(color: Colors.white70)),
+                    accountEmail: Text(
+                      doctorSpecialization,
+                      style: const TextStyle(color: Colors.white70),
+                    ),
                     currentAccountPicture: CircleAvatar(
                       backgroundColor: Colors.black12,
                       child: ClipOval(
@@ -210,10 +222,25 @@ class _MainScreenState extends State<MainScreen> {
                           child: SizedBox(
                             height: MediaQuery.of(context).size.height,
                             width: MediaQuery.of(context).size.width,
-                            child: Image.network(
-                              doctorProfilePic,
-                              fit: BoxFit.cover,
-                            ),
+                            child: isDataAvailable == false
+                                ? Image.asset(
+                                    doctorProfilePic,
+                                    fit: BoxFit.fill,
+                                  )
+                                : CachedNetworkImage(
+                                    imageUrl: doctorProfilePic,
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) =>
+                                        Shimmer.fromColors(
+                                      baseColor: Colors.grey.shade300,
+                                      highlightColor: Colors.grey.shade100,
+                                      child: Container(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
+                                  ),
                           ),
                         ),
                       ),
@@ -228,9 +255,7 @@ class _MainScreenState extends State<MainScreen> {
                       documentSnapshot: dSnapshot,
                     ),
                   ),
-                ).then((value) => {
-                      toggleDrawer(),
-                    });
+                ).then((value) => toggleDrawer());
               },
               leading: const Icon(
                 CupertinoIcons.profile_circled,
@@ -241,7 +266,27 @@ class _MainScreenState extends State<MainScreen> {
                 "My Profile",
                 style: TextStyle(fontSize: 18),
               ),
-            )
+            ),
+            ListTile(
+              onTap: () {
+                firebaseAuthentication.logout().then((_) {
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoginScreen()),
+                      (route) => false);
+                });
+              },
+              leading: const Icon(
+                Icons.logout,
+                size: 30,
+                color: Color.fromRGBO(70, 212, 153, 1),
+              ),
+              title: const Text(
+                "Logout",
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
           ],
         ),
       ),

@@ -9,7 +9,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
       options: const FirebaseOptions(
           apiKey: "AIzaSyApA_dL_JuPltpJsPhXQxLyBAad1Ag9jZ0",
-          appId: "1:599843032180:android:167680ce66234cbfd51521",
+          appId: "1:599843032180:android:2e4e7f7039d6f3ccd51521",
           messagingSenderId: "599843032180",
           projectId: "doctor-appointment-booki-9cff2",
           storageBucket: "gs://doctor-appointment-booki-9cff2.appspot.com"));

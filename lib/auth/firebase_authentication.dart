@@ -15,7 +15,7 @@ class FirebaseAuthentication {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       // Obtain the auth details from the request
       final GoogleSignInAuthentication? googleAuth =
-      await googleUser?.authentication;
+          await googleUser?.authentication;
       // Create a new credential
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth?.accessToken,
@@ -29,7 +29,7 @@ class FirebaseAuthentication {
     }
   }
 
-  logout() {
-    authService.logout();
+  Future<void> logout() async {
+    await authService.logout();
   }
 }

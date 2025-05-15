@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doctor_dashboard_app/screens/reschedule_appointment_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -6,8 +7,8 @@ import 'package:url_launcher/url_launcher.dart';
 import '../services/firebase_services.dart';
 
 class AppointmentSummaryCard extends StatefulWidget {
-  const AppointmentSummaryCard({Key? key, required this.documentSnapshot})
-      : super(key: key);
+  const AppointmentSummaryCard({super.key, required this.documentSnapshot});
+
   final DocumentSnapshot documentSnapshot;
 
   @override
@@ -162,58 +163,66 @@ class _AppointmentSummaryCardState extends State<AppointmentSummaryCard> {
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    shape: const StadiumBorder(),
-                                    backgroundColor: Colors.grey.shade300),
-                                onPressed: () {
-                                  _makePhoneCall(
-                                      widget.documentSnapshot["customerPhone"]);
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                            top: 8.0, bottom: 8.0),
-                                        child: Text(
-                                          "Call Patient",
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.black),
+                              Expanded(
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      shape: const StadiumBorder(),
+                                      backgroundColor: Colors.grey.shade300,
+                                      padding: EdgeInsets.zero),
+                                  onPressed: () {
+                                    _makePhoneCall(widget
+                                        .documentSnapshot["customerPhone"]);
+                                  },
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(5.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              top: 8.0, bottom: 8.0),
+                                          child: Text(
+                                            "Call Patient",
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                color: Colors.black),
+                                          ),
                                         ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(left: 6.0),
-                                        child: Icon(Icons.call,
-                                            size: 25, color: Colors.black),
-                                      ),
-                                    ],
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 6.0),
+                                          child: Icon(Icons.call,
+                                              size: 25, color: Colors.black),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
                               const SizedBox(
                                 width: 20,
                               ),
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  shape: const StadiumBorder(),
-                                  backgroundColor:
-                                      const Color.fromRGBO(70, 212, 153, 0.8),
-                                ),
-                                onPressed: () {
-                                  showCustomDialog(
-                                      context, "Complete", "Completed");
-                                },
-                                child: const Padding(
-                                  padding: EdgeInsets.only(top: 8, bottom: 8),
-                                  child: Padding(
-                                    padding: EdgeInsets.all(5.0),
-                                    child: Text(
-                                      "Mark Completed",
-                                      style: TextStyle(fontSize: 15),
+                              Expanded(
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    shape: const StadiumBorder(),
+                                    backgroundColor:
+                                        const Color.fromRGBO(70, 212, 153, 0.8),
+                                    padding: EdgeInsets.zero,
+                                  ),
+                                  onPressed: () {
+                                    showCustomDialog(
+                                        context, "Complete", "Completed");
+                                  },
+                                  child: const Padding(
+                                    padding: EdgeInsets.only(top: 8, bottom: 8),
+                                    child: Padding(
+                                      padding: EdgeInsets.all(5.0),
+                                      child: Text(
+                                        "Mark Completed",
+                                        style: TextStyle(
+                                            fontSize: 15, color: Colors.white),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -228,12 +237,12 @@ class _AppointmentSummaryCardState extends State<AppointmentSummaryCard> {
                                 Expanded(
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                      elevation: 0,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      backgroundColor: Colors.grey.shade300,
-                                    ),
+                                        elevation: 0,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        backgroundColor: Colors.grey.shade300,
+                                        padding: EdgeInsets.zero),
                                     onPressed: () {
                                       showCustomDialog(
                                           context, "Cancel", "Cancelled");
@@ -241,28 +250,29 @@ class _AppointmentSummaryCardState extends State<AppointmentSummaryCard> {
                                     child: const Padding(
                                       padding: EdgeInsets.only(
                                         top: 9.2,
-                                        left: 7,
-                                        right: 7,
+                                        left: 4,
+                                        right: 4,
                                         bottom: 9.2,
                                       ),
                                       child: Text(
                                         "Cancel",
                                         style: TextStyle(
-                                            color: Colors.black, fontSize: 18),
+                                            color: Colors.black, fontSize: 14),
                                       ),
                                     ),
                                   ),
                                 ),
-                                Expanded(
+                                Padding(
+                                  padding: const EdgeInsets.all(4.0),
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      elevation: 0,
-                                      backgroundColor: const Color.fromRGBO(
-                                          70, 212, 153, 0.8),
-                                    ),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        elevation: 0,
+                                        backgroundColor: const Color.fromRGBO(
+                                            70, 212, 153, 0.8),
+                                        padding: EdgeInsets.zero),
                                     onPressed: () {
                                       showCustomDialog(
                                           context, "Accept", "Accepted");
@@ -270,14 +280,19 @@ class _AppointmentSummaryCardState extends State<AppointmentSummaryCard> {
                                     child: const Padding(
                                       padding: EdgeInsets.only(
                                         top: 13.0,
-                                        left: 7,
-                                        right: 7,
+                                        left: 4,
+                                        right: 4,
                                         bottom: 13,
                                       ),
-                                      child: Text(
-                                        "Accept",
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 18),
+                                      child: Padding(
+                                        padding:
+                                            EdgeInsets.symmetric(horizontal: 8),
+                                        child: Text(
+                                          "Accept",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 22),
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -285,27 +300,47 @@ class _AppointmentSummaryCardState extends State<AppointmentSummaryCard> {
                                 Expanded(
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      elevation: 0,
-                                      backgroundColor: Colors.grey.shade300,
-                                    ),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        elevation: 0,
+                                        backgroundColor: Colors.grey.shade300,
+                                        padding: EdgeInsets.zero),
                                     onPressed: () {
-                                      showCustomDialog(
-                                          context, "Reject", "Rejected");
+                                      //TODO : Doctor can reschedule the appointment
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              RescheduleAppointmentScreen(
+                                            patientName:
+                                                widget.documentSnapshot[
+                                                    "customerName"],
+                                            documentId:
+                                                widget.documentSnapshot.id,
+                                            patientPhoneNumber:
+                                                widget.documentSnapshot[
+                                                    "customerPhone"],
+                                            patientEmailAddress:
+                                                widget.documentSnapshot[
+                                                    "customerEmail"],
+                                          ),
+                                        ),
+                                      );
+                                      // showCustomDialog(
+                                      //     context, "Reschedule", "Reschedule");
                                     },
                                     child: const Padding(
                                       padding: EdgeInsets.only(
                                         top: 9.2,
-                                        left: 7,
-                                        right: 7,
+                                        left: 4,
+                                        right: 4,
                                         bottom: 9.2,
                                       ),
                                       child: Text(
-                                        "Reject",
+                                        "Reschedule",
                                         style: TextStyle(
-                                            color: Colors.black, fontSize: 18),
+                                            color: Colors.black, fontSize: 14),
                                       ),
                                     ),
                                   ),

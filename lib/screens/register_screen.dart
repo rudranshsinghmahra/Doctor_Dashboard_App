@@ -77,33 +77,40 @@ class _RegisterPageState extends State<RegisterPage> {
                             children: [
                               SizedBox(
                                 width: double.infinity,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.06,
+                                height: 50,
                                 child: ElevatedButton(
-                                    style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all(
-                                                Colors.redAccent)),
-                                    onPressed: () {
-                                      setState(() {
-                                        loading = true;
-                                      });
-                                      authBloc.loginGoogle();
-                                    },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: const [
-                                        Icon(FontAwesomeIcons.google),
-                                        SizedBox(
-                                          width: 15,
-                                        ),
-                                        Text(
-                                          "SignUp With Google",
-                                          style: TextStyle(fontSize: 18),
-                                        ),
-                                      ],
-                                    )),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.redAccent,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                        10,
+                                      ),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      loading = true;
+                                    });
+                                    authBloc.loginGoogle();
+                                  },
+                                  child: const Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        FontAwesomeIcons.google,
+                                        color: Colors.white,
+                                      ),
+                                      SizedBox(
+                                        width: 15,
+                                      ),
+                                      Text(
+                                        "Sign up With Google",
+                                        style: TextStyle(
+                                            fontSize: 18, color: Colors.white),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
                             ],
                           ),

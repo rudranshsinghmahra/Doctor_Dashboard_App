@@ -131,9 +131,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             children: [
                               Container(
                                 decoration: BoxDecoration(
-                                  color: Colors.redAccent,
-                                  borderRadius: BorderRadius.circular(10)
-                                ),
+                                    color: Colors.redAccent,
+                                    borderRadius: BorderRadius.circular(10)),
                                 width: double.infinity,
                                 height:
                                     MediaQuery.of(context).size.height * 0.06,
@@ -147,13 +146,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                   child: const Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Icon(FontAwesomeIcons.google,color: Colors.white,),
+                                      Icon(
+                                        FontAwesomeIcons.google,
+                                        color: Colors.white,
+                                      ),
                                       SizedBox(
                                         width: 15,
                                       ),
                                       Text(
                                         "Sign in with Google",
-                                        style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
                                       ),
                                     ],
                                   ),
@@ -199,11 +204,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           onPressed: () {
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
-                                    builder: (context) => RegisterPage()),
+                                    builder: (context) => const RegisterPage()),
                                 (Route<dynamic> route) => false);
                           },
                           child: const Text(
-                            "Don't have an account? SignUp",
+                            "Don't have an account? Sign up",
                             style: TextStyle(
                                 color: Color.fromRGBO(70, 212, 153, 1),
                                 fontWeight: FontWeight.bold),

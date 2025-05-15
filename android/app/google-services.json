@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "599843032180-b7di2bqe0m3p0ahvlsssrq62ls8l9i5i.apps.googleusercontent.com",
+          "client_id": "599843032180-v45g4ibv2emoc7qvhqahlbvj3dlvslsc.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.rudransh.doctor_appointment_booking_app",
-            "certificate_hash": "d75a1b943848605cf310ccd2270f397d100654a7"
+            "certificate_hash": "f6e6f0c7812784d9c6b93a5a7c9852856b615b1a"
           }
         },
         {
@@ -51,40 +51,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "599843032180-q1c5pu3pr2l5a3b9gvfdmhq54les4i5k.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyApA_dL_JuPltpJsPhXQxLyBAad1Ag9jZ0"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "599843032180-q1c5pu3pr2l5a3b9gvfdmhq54les4i5k.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:599843032180:android:17c4a4e571b61cc6d51521",
-        "android_client_info": {
-          "package_name": "com.rudransh.doctors_app"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "599843032180-f3fr0e3vojcmpdhf2j580ju7o7u4glic.apps.googleusercontent.com",
+          "client_id": "599843032180-5oro60pt9cojvo70rnb6bi5bqb0gnd6h.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.rudransh.doctors_app",
-            "certificate_hash": "d75a1b943848605cf310ccd2270f397d100654a7"
+            "package_name": "com.rudransh.doctor_dashboard_app",
+            "certificate_hash": "f6e6f0c7812784d9c6b93a5a7c9852856b615b1a"
           }
         },
         {

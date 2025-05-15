@@ -44,4 +44,35 @@ class FirebaseServices {
       }
     });
   }
+
+  Future registerDoctorProfile({
+    doctorId,
+    doctorName,
+    doctorSpecialization,
+    doctorAbout,
+    doctorProfilePic,
+    mondayTiming,
+    tuesdayTiming,
+    wednesdayTiming,
+    thursdayTiming,
+    fridayTiming,
+    saturdayTiming,
+    sundayTiming,
+  }) async {
+    await doctors.doc(doctorId).set({
+      "doctor_name": doctorName,
+      "doctor_specialization": doctorSpecialization,
+      "doctor_about": doctorAbout,
+      "doctor_profile_picture": doctorProfilePic,
+      "consultation_timings": {
+        "monday": mondayTiming,
+        "tuesday": tuesdayTiming,
+        "wednesday": wednesdayTiming,
+        "thursday": thursdayTiming,
+        "friday": fridayTiming,
+        "saturday": saturdayTiming,
+        "sunday": sundayTiming,
+      }
+    });
+  }
 }
